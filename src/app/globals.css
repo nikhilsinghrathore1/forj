@@ -19,3 +19,82 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@font-face {
+  font-family: font1;
+  src: url('/18a8383f82b767c1-s.p.ttf');
+}
+@font-face {
+  font-family: font2;
+  src: url('/24437d246c9412ba-s.p.ttf');
+}
+@font-face {
+  font-family: font3;
+  src: url('/2ba03bcf4600f506-s.p.ttf');
+}
+@font-face {
+  font-family: font4;
+  src: url('/3c0a20a48548ae37-s.p.ttf');
+}
+@font-face {
+  font-family: font5;
+  src: url('/404d16a48cfd5dcd-s.p.ttf');
+}
+@font-face {
+  font-family: font6;
+  src: url('/80d90e1e722a80dc-s.p.ttf');
+}
+@font-face {
+  font-family: font7;
+  src: url('/b06d54d0a237533a-s.p.ttf');
+}
+@font-face {
+  font-family: font8;
+  src: url('/b8107bede19baa40-s.p.ttf');
+}
+@font-face {
+  font-family: font9;
+  src: url('/e8d05d87005ce07f-s.p.ttf');
+}
+@font-face {
+  font-family: font10;
+  src: url('/inter_Inter-Bold.ttf');
+}
+@font-face {
+  font-family: font11;
+  src: url('/inter_Inter-Regular.ttf');
+}
+
+.f1{
+  font-family: font1;
+}
+.f2{
+  font-family: font2;
+}
+.f3{
+  font-family: font3;
+}
+.f4{
+  font-family: font4;
+}
+.f5{
+  font-family: font5;
+}
+.f6{
+  font-family: font6;
+}
+.f7{
+  font-family: font7;
+}
+.f8{
+  font-family: font8;
+}
+.f9{
+  font-family: font9;
+}
+.f10{
+  font-family: font10;
+}
+.f11{
+  font-family: font11;
+}
