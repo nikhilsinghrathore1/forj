@@ -3,8 +3,7 @@ import React, { useContext, useState, useEffect, useRef, ReactNode } from 'react
 import { MsgContext } from '../../../context/MsgContext';
 import Codeview from '../../../components/CodeView';
 import { PreviewContext } from '../../../context/PreviewContext';
-import { gsap, Linear } from "gsap";
-import { Expo } from 'gsap/all';
+import { gsap } from "gsap";
 
 const Page = () => {
   const context = useContext(MsgContext);
