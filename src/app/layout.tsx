@@ -1,24 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { FaGg } from "react-icons/fa";
-import { RiContractLeftLine } from "react-icons/ri";
-import { GrFormSearch } from "react-icons/gr";
 import Provider from "./Provider";
-import NavLink from "../../components/NavLinks.";
-
-
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,56 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body
-        className={`w-full h-screen bg-[#F3F3EE] overflow-hidden flex antialiased`}
-      >
-
-
-        <div className="h-full w-[14%] relative flex flex-col py-5 pl-5 pr-2 ">
-          {/* logo */}
-                  <div className="flex transition-all duration-200  hover:text-cyan-700 gap-1 items-center relative w-full text-cyan-950  text-2xl f11 ">
-                        <FaGg className="text-3xl text-cyan-700"/>
-                        <h1 className="tracking-tight">ANON</h1>
-                        <div className="absolute top-1/2 right-2 text-lg opacity-70 -translate-y-1/2">
-                        <RiContractLeftLine/>
-                        </div>
-                  </div>
-
-                  {/* new thread */}
-
-                  <div className="w-full mt-8 hover:border-cyan-700 border-[#d3d3d1] border-[2px] transition-all duration-200 text-sm f4  opacity-70 items-center justify-between px-5 rounded-full py-[6px] bg-[#FCFCF9] flex">
-                    <h1 >New Thread</h1>
-                    <div className="flex gap-1">
-
-                    <span className="px-[2px] text-xs py-[2px] border-[1px] f7 border-gray-300 rounded">Ctrl</span>
-                    <span className="px-[2px] text-xs py-[2px] border-[1px] f7 border-gray-300 rounded">I</span>
-                    </div>
-                  </div>
-
-                  {/* links Section */}
-                  <NavLink/>
-
-                  <div className=" flex flex-col absolute bottom-10 px-3 left-0  gap-[6px] w-full">
-                    <div className="flex cursor-pointer bg-[#22646b] hover:bg-[#417980] duration-200 text-white f10 items-center justify-center w-full p-2 rounded-lg">
-                      Connect wallet
-                    </div>
-                    <div className="flex cursor-pointer bg-[#E8E8E3] text-black f11 items-center justify-center w-full p-2 rounded-lg f10">
-                      Docs
-                    </div>
-                  </div>
-
-        </div>
-
-
-
-
-
-        <div className="w-[86%] overflow-hidden h-full py-2 px-[5px]">
-    <Provider>
-
-        {children}
-    </Provider>
-        </div>
+      <body className={`w-full h-screen flex antialiased`}>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

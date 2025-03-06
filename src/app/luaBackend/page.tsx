@@ -44,6 +44,7 @@ const Page = () => {
       }
     };
     
+    
 
   useEffect(() => {
     gsap.set(codeViewRef.current,{
@@ -63,6 +64,7 @@ const Page = () => {
 
 
   return (
+
     <div className="w-full overflow-hidden bg-[#FCFCF9] relative overflow-y-auto h-full rounded-lg">
       <div className="w-full flex items-center py-3 px-5 border-b-[1px] border-black/10 justify-between">
         <div className="flex gap-1 f4 text-xs opacity-70 items-center">
@@ -73,13 +75,15 @@ const Page = () => {
           </svg>
           <h1>Now</h1>
         </div>
+
+        <div></div>
+        <div>audits</div>
       </div>
       
-      <div className="w-full relative flex">
-        <div className="w-[40%] h-full"></div>
+      <div className="w-full relative   flex">
+        <div className="w-[40%] bg-black  h-full"></div>
 
-        <div className="w-[60%] full">
-          {/* {message.length > 1 && ( */}
+        <div className="w-[60%]  full">
             <div  ref={codeViewRef}>
               <div className="w-full py-2">
                 <div className="w-[15%] h-full border-[2px] text-sm flex items-center justify-between px-[5px] py-[2px] rounded-full">
@@ -91,7 +95,6 @@ const Page = () => {
                 <Codeview />
               </div>
             </div>
-          {/* )} */}
         </div>
       </div>
 
