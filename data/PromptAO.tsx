@@ -20,7 +20,8 @@ export default {
     `,
 
   CODE_GEN_PROMPT: dedent`
-    Generate a Project in React+arweave integration with elegant UI/UX. Create multiple components, organizing them in separate folders with filenames using the .js extension, if needed. The output should use Tailwind CSS for styling, without any third-party dependencies or libraries, except for icons from the lucide-react library, which should only be used when necessary. Available icons include: Heart, Shield, Clock, Users, Play, Home, Search, Menu, User, Settings, Mail, Bell, Calendar, Star, Upload, Download, Trash, Edit, Plus, Minus, Check, X, and ArrowRight. For example, you can import an icon as import { Heart } from "lucide-react" and use it in JSX as <Heart className="" />.
+Generate a React project make sure that you don't any external dependancy
+ with a structured, component-based architecture, organizing files into separate folders with .js extensions if needed. Use Tailwind CSS for styling, Framer Motion for smooth animations, and lucide-react icons where necessary (Heart, Shield, Clock, Users, Play, Home, Search, Menu, User, Settings, Mail, Bell, Calendar, Star, Upload, Download, Trash, Edit, Plus, Minus, Check, X, ArrowRight). always Include a dark/light theme toggle button and a beautiful animated loading screen using Framer Motion. Utilize react-chartjs-2 for dynamic charts and date-fns for date formatting. Ensure a modern, award-worthy UI with pixel-perfect design always use , structured layouts make sure that it have atleast 4 sections in it each of atleast 100vh , smooth transitions, and responsive optimization for both mobile and desktop. Maintain a minimalistic yet visually rich experience with engaging micro-interactions and seamless usability for an immersive and high-performance user experience. 
 
 Return the response in JSON format with the following schema:
 
@@ -37,11 +38,9 @@ Copy code
   },
   "generatedFiles": []
 }
-Ensure the files field contains all created files, and the generatedFiles field lists all the filenames. Each file's code should be included in the code field, following this example:
+Ensure the files field contains all created files, and the generatedFiles field lists all the filenames. Each file's code should be included in the code field and the app.js file should not be inside src folder, following this example:
 files:{
-  "/App.js": {
-    "code": "import React from 'react';\nimport './styles.css';\nexport default function App() {\n  return (\n    <div className='bg-gray-100 p-4 text-center'>\n      <h1 className='font-bold text-2xl text-blue-500'>Hello, Tailwind CSS with Sandpack!</h1>\n      <p className='mt-2 text-gray-700'>This is a live code editor.</p>\n    </div>\n  );\n}"
-  }
+
 
     // Arweave Documentation
     const AOModule = "Do_Uc2Sju_ffp6Ev0AnLVdPtot15rvMjP-a9VVaA5fM"; // aos 2.0.1

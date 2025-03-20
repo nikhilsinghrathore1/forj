@@ -44,7 +44,7 @@ const sanitizeAndParseJSON = (text: string) => {
   } catch (error) {
     console.error("JSON parsing error:", error);
     console.error("Original text:", text);
-    throw new Error(`Invalid JSON response: ${error.message}`);
+    throw new Error(`Invalid JSON response: `);
   }
 };
 

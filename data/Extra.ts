@@ -1,51 +1,23 @@
 import dedent from 'dedent';
 
-const DEPENDENCIES = {
-  dependencies: {
-    react: "^18.0.0",
-    "react-dom": "^18.0.0",
-    axios: "^1.7.9",
-    arweave: "1.15.5",
-    "arweave-wallet-kit": "1.1.0",
-    "@permaweb/aoconnect": "^0.0.63",
-    esbuild: "0.25.0",
-    "esbuild-wasm": "0.25.0",
-    "warp-arbundles": "^1.0.4",
-    prettier: "3.1.0",
-    "react-router-dom": "6.28.0",
-    "react-tinder-card": "1.6.4",
-    "@react-spring/web": "9.7.5",
-    "styled-components": "6.1.15",
-    "tw-to-css": "0.0.12",
-    eslint: "^9.21.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-import": "2.29.0",
-    "eslint-plugin-prettier": "5.0.1",
-    "eslint-plugin-react": "7.33.2",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "@vitejs/plugin-react": "^4.3.4",
-    vite: "^6.2.0",
-    typescript: "~5.7.2",
-    "react-swipeable": "^6.1.0",
-    'framer-motion': '^4.1.17',
-    "react-toastify": "11.0.5"
-  },
-  devDependencies: {
-    "@types/node": "20.12.13",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@eslint/js": "^9.21.0",
-    "@typescript-eslint/eslint-plugin": "6.13.1",
-    "@typescript-eslint/parser": "6.13.1",
-    "typescript-eslint": "^8.24.1",
-    "@vitejs/plugin-react-swc": "3.7.0"
-  }
-};
-
 export default {
+  SUGGSTIONS: [
+    'Create ToDo App in React',
+    'Create Budget Track App',
+    'Create Gym Managment Portal Dashboard',
+    'Create Quizz App On History',
+    'Create Login Signup Screen',
+  ],
+  HERO_HEADING: 'What do you want to build?',
+  HERO_DESC: 'Prompt, run, edit, and deploy full-stack web apps.',
+  INPUT_PLACEHOLDER: 'What you want to build?',
+  SIGNIN_HEADING: 'Continue With Bolt.New 2.0',
+  SIGNIN_SUBHEADING:
+    'To use Bolt you must log into an existing account or create one.',
+  SIGNIn_AGREEMENT_TEXT:
+    'By using Bolt, you agree to the collection of usage data for analytics.',
 
-  DEFAULT_FILE:{
+  DEFAULT_FILE: {
     '/public/index.html': {
       code: `<!DOCTYPE html>
 <html lang="en">
@@ -164,9 +136,6 @@ const config = {
 export default config;
 `,
     },
-    '/App.js': {
-      code:"" ,
-    },
   },
   DEPENDANCY: {
     postcss: '^8',
@@ -182,6 +151,7 @@ export default config;
     'locomotive-scroll': '^5.0.0-beta.21',
     '@permaweb/aoconnect': '^0.0.63',
     arweave: '^1.15.5',
+    firebase: '^11.1.0',
     '@google/generative-ai': '^0.21.0',
     'react-chartjs-2': '^5.3.0',
     'chart.js': '^4.4.7',
@@ -190,9 +160,37 @@ export default config;
     'clsx': '^2.0.0',
     '@tailwindcss/typography': '^0.5.10',
   },
-  
-  
+
+  PRICING_DESC:
+    'Start with a free account to speed up your workflow on public projects or boost your entire team with instantly-opening production environments.',
+  PRICING_OPTIONS: [
+    {
+      name: 'Basic',
+      tokens: '50K',
+      value: 50000,
+      desc: 'Ideal for hobbyists and casual users for light, exploratory use.',
+      price: 4.99,
+    },
+    {
+      name: 'Starter',
+      tokens: '120K',
+      value: 120000,
+      desc: 'Designed for professionals who need to use Bolt a few times per week.',
+      price: 9.99,
+    },
+    {
+      name: 'Pro',
+      tokens: '2.5M',
+      value: 2500000,
+      desc: 'Designed for professionals who need to use Bolt a few times per week.',
+      price: 19.99,
+    },
+    {
+      name: 'Unlimted (License)',
+      tokens: 'Unmited',
+      value: 999999999,
+      desc: 'Designed for professionals who need to use Bolt a few times per week.',
+      price: 49.99,
+    },
+  ],
 };
-
-
- 

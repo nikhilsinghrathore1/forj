@@ -7,23 +7,21 @@ import {
   SandpackCodeEditor,
   SandpackFileExplorer,
   SandpackPreview,
-  useSandpack,
 } from "@codesandbox/sandpack-react";
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { PreviewContext } from "../context/PreviewContext";
 import Extra from "../data/Extra";
 import { MsgContext } from "../context/MsgContext";
-import testData from "../data/testData";
 import PromptAO from "../data/PromptAO";
 import axios from "axios";
 
-interface CodeviewProps {
-  activeProject: any; 
-}
+// interface CodeviewProps {
+//   activeProject: any; 
+// }
 
-interface Project {
-  codebase?: Record<string, any>;
-}
+// interface Project {
+//   codebase?: Record<string, any>;
+// }
 
 
 
@@ -45,7 +43,7 @@ const Codeview= () => {
     if (!msgcontext) {
       throw new Error("context not present");
     }
-    const { message, setMessage } = msgcontext;
+    const { message } = msgcontext;
   
   const [previewStyle, setPreviewStyle] = useState({
     transform: "translateX(100vw)",
@@ -132,7 +130,7 @@ const Codeview= () => {
       console.log(PromptAO.CODE_GEN_PROMPT)
       const PROMPT = message[message.length - 1].msg +" " + PromptAO.CODE_GEN_PROMPT
       try{
-        const result =await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/code/genCode`,{
+        const result =await axios.post(`https://anon-backend-1yz9.onrender.com/code/genCode`,{
           prompt:PROMPT
         }) 
 

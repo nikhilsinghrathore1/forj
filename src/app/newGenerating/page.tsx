@@ -5,12 +5,10 @@ import Codeview from "../../../components/CodeView";
 import { PreviewContext } from "../../../context/PreviewContext";
 import { sanitizeAndParseJSON } from "../../../configs/AiModel";
 import Markdown from "react-markdown"
-import { FaLink, FaPlay } from "react-icons/fa";
 import { FiLink } from "react-icons/fi";
-import { VscDebugStart } from "react-icons/vsc";
 import axios from "axios";
 import Prompt from "../../../data/Prompt";
-import PromptAO from "../../../data/PromptAO";
+import { FaPlay } from "react-icons/fa";
 
 
 
@@ -18,24 +16,23 @@ const page = () => {
   const lastCalledRef = useRef(0); 
   const [loading, setloading] = useState(true)
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const timeoutRef = useRef(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 
-  const handleMouseEnter = (index) => {
+  const handleMouseEnter = (index:any) => {
     timeoutRef.current = setTimeout(() => {
       setHoveredIndex(index);
     }, 800); // 1 second delay
   };
 
   const handleMouseLeave = () => {
-    clearTimeout(timeoutRef.current);
+    clearTimeout(timeoutRef.current!);
     setHoveredIndex(null);
   };
 
 
 
   // what all needs to be fixed first thing first i have to implement the web-container that is the first task 
-  // 
   const context = useContext(MsgContext);
   if (!context) {
     throw new Error("context not present");
@@ -47,7 +44,7 @@ const page = () => {
     if (!Previewcontext) {
       throw new Error("context not defined");
     }
-    const { preview, setPreview } = Previewcontext;
+    const {setPreview } = Previewcontext;
 
   const followUpChat = () => {
     if (userInput.length > 2) {
@@ -77,7 +74,7 @@ useEffect(()=>{
     try{
 
       const MESSAGE = JSON.stringify(message) + Prompt.CHAT_PROMPT
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/getChat` , {
+      const response = await axios.post(`https://anon-backend-1yz9.onrender.com/chat/getChat` , {
         prompt: MESSAGE
       })
       const result = sanitizeAndParseJSON(response.data.res)
@@ -247,7 +244,7 @@ useEffect(()=>{
     
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(0)}
+        onMouseEnter={() => setHoveredIndex(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -277,7 +274,7 @@ useEffect(()=>{
 
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(1)}
+        onMouseEnter={() => setHoveredIndex(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -309,7 +306,7 @@ useEffect(()=>{
 
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(2)}
+        onMouseEnter={() => setHoveredIndex(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -336,7 +333,7 @@ useEffect(()=>{
 
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(3)}
+        onMouseEnter={() => setHoveredIndex(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -369,7 +366,7 @@ useEffect(()=>{
            
       <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(4)}
+        onMouseEnter={() => handleMouseEnter(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
        
@@ -411,7 +408,7 @@ useEffect(()=>{
 
             <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(5)}
+        onMouseEnter={() => handleMouseEnter(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
        
@@ -463,7 +460,7 @@ useEffect(()=>{
 
             <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(6)}
+        onMouseEnter={() => handleMouseEnter(null)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
        
@@ -568,7 +565,7 @@ useEffect(()=>{
               className={`w-[50%] px-2 h-full flex items-center gap-2 justify-center transition-all duration-300 ${
                 isToggled ? "bg-[#313D45]" : "bg-transparent"
               }`}
-              onClick={() => setPreview("preview")}
+              onClick={() => (console.log("preview loaded") ,setPreview("preview"))}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -594,7 +591,7 @@ useEffect(()=>{
 
             <div
         className='relative  inline-block'
-        onMouseEnter={() => handleMouseEnter(7)}
+        onMouseEnter={() => handleMouseEnter(null)}
         onMouseLeave={() => handleMouseLeave()}
       >
        <FaPlay className="opacity-90"/>
@@ -607,7 +604,7 @@ useEffect(()=>{
 
             <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(8)}
+        onMouseEnter={() => handleMouseEnter(null)}
         onMouseLeave={() => handleMouseLeave()}
       >
       <FiLink className="opacity-80"/>
@@ -670,7 +667,7 @@ useEffect(()=>{
   {activeTab === "Chat" ? (
     <div className="w-full h-[77%] text-[#FFFFFF] gap-5 border-b border-[#37454E] justify-end px-4 flex flex-col">
       {/* Chat Section */}
-      <div className="flex flex-col py-5 gap-5 justify-end items-end">
+      <div className="flex flex-col overflow-y-auto py-5 gap-5 justify-end items-end">
         {message.map((msg, index) => (
           <div key={index} className="w-full flex flex-col gap-3 justify-end items-end">
             {msg.role === "user" && (
@@ -700,7 +697,7 @@ useEffect(()=>{
                     </svg>
                   </div>
                 </div>
-
+              
                 <div className="w-[85%] flex gap-1">
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse delay-200"></span>

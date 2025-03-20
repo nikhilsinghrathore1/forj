@@ -14,9 +14,6 @@
   }
 }
 
-
-
-
 body {
   color: var(--foreground);
   background: var(--background);
@@ -67,6 +64,26 @@ body {
   font-family: font11;
   src: url('/inter_Inter-Regular.ttf');
 }
+@font-face {
+  font-family: font12;
+  src: url('/Sohne.ttf');
+}
+@font-face {
+  font-family: font13;
+  src: url('/SohneMono-Buch.ttf');
+}
+@font-face {
+  font-family: font14;
+  src: url('/CashSans-Bold.ttf');
+}
+@font-face {
+  font-family: font15;
+  src: url('/CashSans-Medium.ttf');
+}
+@font-face {
+  font-family: font16;
+  src: url('/CashSans-Regular.ttf');
+}
 
 .f1{
   font-family: font1;
@@ -100,4 +117,20 @@ body {
 }
 .f11{
   font-family: font11;
+}
+.f12{
+  font-family: font12;
+}
+.f13{
+  font-family: font13;
+}
+
+.f14{
+  font-family: font14;
+}
+.f15{
+  font-family: font15;
+}
+.f16{
+  font-family: font16;
 }
