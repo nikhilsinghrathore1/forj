@@ -14,14 +14,7 @@ import Extra from "../data/Extra";
 import { MsgContext } from "../context/MsgContext";
 import PromptAO from "../data/PromptAO";
 import axios from "axios";
-
-// interface CodeviewProps {
-//   activeProject: any; 
-// }
-
-// interface Project {
-//   codebase?: Record<string, any>;
-// }
+import Extras from "../data/Extras";
 
 
 
@@ -30,7 +23,7 @@ const Codeview= () => {
   if (!context) {
     throw new Error("context not defined");
   }
-  const [files, setfiles]= useState(Extra.DEFAULT_FILE)
+    const [files, setfiles]= useState(Extras.DEFAULT_FILE)
 
     const lastCalledRefCode = useRef(0); 
   
@@ -58,77 +51,13 @@ const Codeview= () => {
     }));
   }, [preview]);
 
-
-  // let normalizedCodebase:any = {};
-  // const [currentProject, setCurrentProject] = useState<Project>({});
-
-  // useEffect(() => {
-  //   const fetchProjectCode = async (projectId:string) => {
-  //     try {
-  //       console.log("new code called")
-  //       setLoading(true);
-  //       const response = await axios.get(
-  //         `${process.env.NEXT_PUBLIC_TEST_URL}/projects/${projectId}`
-  //       );
-  //       console.log(response)
-
-
-  //       if (response.data) {
-  //         console.log("response recieved")
-  //         // Normalize codebase array into an object with file paths as keys
-  //         if (Array.isArray(response.data.codebase)) {
-  //           response.data.codebase.forEach((file:any) => {
-  //             // Use filePath as key, prefixed with '/' if not already
-  //             const filePath = file.filePath.startsWith('/')
-  //               ? file.filePath
-  //               : `/${file.filePath}`;
-  //             normalizedCodebase[filePath] = file.code; // Use code directly as string
-  //           });
-  //           // console.log('inside 1st\n', normalizedCodebase);
-  //         } else if (typeof response.data.codebase === 'object') {
-  //           // If it's already an object, ensure keys are proper paths
-  //           normalizedCodebase = Object.entries(response.data.codebase).reduce(
-  //             (acc, [key, value]) => {
-  //               const path = key.startsWith('/') ? key : `/src/${key}`;
-  //               (acc as any)[path] = value;
-  //               return acc;
-  //             },
-  //             {}
-  //           );
-  //           // console.log('inside 2nd\n', normalizedCodebase);
-  //         } else {
-  //           normalizedCodebase = Extra.DEFAULT_FILE; // Fallback to default if invalid
-  //           // console.log('inside 3rd\n', normalizedCodebase);
-  //         }
-  //         setCurrentProject({ ...response.data, codebase: normalizedCodebase });
-  //         // console.log('Normalized codebase:', normalizedCodebase);
-  //       }
-  //     } catch (error:any) {
-  //       if (error.response.data.error === 'No code found for project') {
-  //      alert("error occured")
-  //         return;
-  //       }
-
-  //       alert("error occured")
-  //       console.error('Error loading project code:', error);
-  //       return;
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchProjectCode("4")
-    
-
-  // }, []);
   
 
  
     const GetCode = async()=>{
   
       setLoading(true)
-      console.log(PromptAO.CODE_GEN_PROMPT)
-      const PROMPT = message[message.length - 1].msg +" " + PromptAO.CODE_GEN_PROMPT
+      const PROMPT = message[message.length - 1].msg 
       try{
         const result =await axios.post(`https://anon-backend-1yz9.onrender.com/code/genCode`,{
           prompt:PROMPT
@@ -163,15 +92,7 @@ useEffect(() => {
   }
 }, [message]);
 
-// const codebaseFiles = currentProject.codebase || {};
 
-// const sandpackFiles = {
-//   ...Extra.DEFAULT_FILE,
-//   ...codebaseFiles,
-// };
-
-// now have to add a loading screen 
-// have to implement the webcontainer here or maybe in a new component 
   return (
     <div className="relative">
       {Loading ? (

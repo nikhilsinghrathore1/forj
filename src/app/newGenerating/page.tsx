@@ -9,6 +9,7 @@ import { FiLink } from "react-icons/fi";
 import axios from "axios";
 import Prompt from "../../../data/Prompt";
 import { FaPlay } from "react-icons/fa";
+import PromptAO from "../../../data/PromptAO";
 
 
 
@@ -516,7 +517,7 @@ useEffect(()=>{
         <div className="w-full text-white  h-[6.4%] border-b-[0.5px] flex items-center justify-between px-5 border-[#37454E] ">
           {/* first part */}
           <div className="flex items-center gap-[6px]">
-            <h1 className="text-sm f7 tracking-tighter">NikoTuner</h1>
+            <h1 className="text-sm f7 tracking-tighter">BetaVersion</h1>
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

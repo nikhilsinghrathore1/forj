@@ -85,6 +85,19 @@ body {
   src: url('/CashSans-Regular.ttf');
 }
 
+@font-face {
+  font-family: font17;
+  src: url(/figtree-regular.ttf);
+}
+@font-face {
+  font-family: font18;
+  src: url(/figtree-semibold.ttf);
+}
+@font-face {
+  font-family: font19;
+  src: url(/stolzl-regular.ttf);
+}
+
 .f1{
   font-family: font1;
 }
@@ -134,3 +147,13 @@ body {
 .f16{
   font-family: font16;
 }
+.f17{
+  font-family: font17;
+}
+.f18{
+  font-family: font18;
+}
+.f19{
+  font-family: font19;
+}
+
