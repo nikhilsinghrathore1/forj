@@ -62,7 +62,6 @@ const Codeview= () => {
         const result =await axios.post(`https://anon-backend-1yz9.onrender.com/code/genCode`,{
           prompt:PROMPT
         }) 
-
         console.log(result)
         const aiResp = result.data.resp
         const mergedFile = {...aiResp?.files}
