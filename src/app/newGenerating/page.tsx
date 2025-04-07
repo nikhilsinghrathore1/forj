@@ -63,47 +63,52 @@ const page = () => {
   };
 
 
-useEffect(()=>{
-  const getChat = async()=>{
-    const now = Date.now();
-    if (now - lastCalledRef.current < 10000) {
-      console.log("Rate limiter active, skipping call.");
-      return; 
+  useEffect(() => {
+    const getChat = async () => {
+      const now = Date.now();
+  
+      // Rate limiter: skip if last call was < 10s ago
+      if (now - lastCalledRef.current < 10000) {
+        console.log("Rate limiter active, skipping call.");
+        return;
+      }
+  
+      lastCalledRef.current = now;
+      console.log("Calling the get AI response here");
+  
+      try {
+        const MESSAGE = JSON.stringify(message) + Prompt.CHAT_PROMPT;
+  
+        const response = await axios.post(`https://anon-backend-1yz9.onrender.com/chat/getChat`, {
+          prompt: MESSAGE,
+        });
+  
+        const result = sanitizeAndParseJSON(response.data.res);
+  
+        setMessage((prev) => [
+          ...(Array.isArray(prev) ? prev : []),
+          {
+            role: "ai",
+            msg: result.response?.description ?? result.response,
+          },
+        ]);
+  
+        console.log(result);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      } finally {
+        setloading(false);
+      }
+    };
+  
+    if (message.length > 0 && message[message.length - 1].role === "user") {
+      // Only trigger when user adds a new message
+      console.log("request sent to get chat");
+      getChat();
     }
-    lastCalledRef.current = now; 
-    console.log("Calling the get AI response here");
-    try{
-
-      const MESSAGE = JSON.stringify(message) + Prompt.CHAT_PROMPT
-      const response = await axios.post(`https://anon-backend-1yz9.onrender.com/chat/getChat` , {
-        prompt: MESSAGE
-      })
-      const result = sanitizeAndParseJSON(response.data.res)
-      setMessage((prev) => [
-        ...(Array.isArray(prev) ? prev : []),
-        {
-          role: "ai",
-          msg: result.response?.description ?? result.response
-
-        },
-      ]);
-
-      console.log(result)
-    }catch(err){
-      console.log(err)
-      throw err; 
-    }
-    finally{
-
-      setloading(false)
-    }
-
-  }
-  console.log("request send to get chat")
-   getChat()
-
-},[message])
-
+  }, [message]);
+  
 
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

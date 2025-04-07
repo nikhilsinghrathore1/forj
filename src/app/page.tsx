@@ -10,15 +10,20 @@ import LandingNavbar from "./Landing/Components/LandingNavbar"
 import HoriCards from "./Landing/Components/HoriCards"
 import ExpandedComp from "./Landing/Components/ExpandedComp"
 import VerticalExpand from "./Landing/Components/VerticalExpand"
+import LocomotiveScroll from 'locomotive-scroll';
+
 
 
 export default function Home() {
+  const locomotiveScroll = new LocomotiveScroll();
   const startChat = () => {
     setMessage([{ msg: prompt, role: "user" }]);
     redirect("/newGenerating");
   };
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log("first entered")
     if (event.key === "Enter" && !event.shiftKey && prompt.length > 1) {
+      console.log("entered")
       event.preventDefault();
       startChat();
     }
@@ -48,7 +53,9 @@ export default function Home() {
 
           {/* input field */}
           <div className='w-[32%] shadow-xl shadow-black/10 px-5 bg-[#FFFFFA]  duration-200   f18 py-[16px] rounded-full border-[1px] text-lg border-black'>
-                  <input className='w-full h-full outline-none' type="text" placeholder='Enter your email...' />                             
+                  <input 
+                  onKeyDown={handleKeyDown}
+                  onChange={(e)=>setprompt(e.target.value)} className='w-full h-full outline-none' type="text" placeholder='Enter your email...' />                             
           </div>
 
           <div className='px-5 w-[15%] bg-[#B0EC9C] flex items-center gap-2 justify-center f18 py-[16px] rounded-full border-[1px]   text-lg border-black '>
