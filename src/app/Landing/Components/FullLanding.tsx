@@ -55,7 +55,7 @@ export default function Home() {
                   onChange={(e) => setprompt(e.target.value)}
                   className="w-full h-full outline-none"
                   type="text"
-                  placeholder="Enter your email..."
+                  placeholder="what you wanna vibe code..."
                 />
               </div>
 
