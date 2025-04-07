@@ -74,7 +74,7 @@ const Codeview = () => {
     console.log(PROMPT);
 
     try {
-      const result = await axios.post(`http://localhost:4000/code/genCode`, {
+      const result = await axios.post(`https://anon-backend-1yz9.onrender.com/code/genCode`, {
         role: "user",
         prompt: PROMPT,
       });
