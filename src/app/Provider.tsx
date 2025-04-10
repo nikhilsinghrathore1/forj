@@ -2,17 +2,21 @@
 import { MsgContext } from '../../context/MsgContext';
 import { useState, ReactNode } from 'react';
 import { PreviewContext } from '../../context/PreviewContext';
+import { RunLuaContextt } from '../../context/LuaContext';
 
 const Provider = ({ children }: { children: ReactNode }) => {
-  const [message, setMessage] = useState<{ msg: string; role: string; }[]>([]); // Ensuring it's an array of objects
+  const [messages, setMessage] = useState<{ msg: string; role: string; }[]>([]); // Ensuring it's an array of objects
   const [preview, setPreview] = useState<string>("code");
+  const [LuaMsg, setLuaMsg] = useState<string>("");
 
   return (
-    <MsgContext.Provider value={{ message, setMessage }}>
+    <RunLuaContextt.Provider value={{LuaMsg , setLuaMsg}}>
+    <MsgContext.Provider value={{ messages, setMessage }}>
       <PreviewContext.Provider value={{ preview, setPreview }}>
         {children}
       </PreviewContext.Provider>
-    </MsgContext.Provider>
+    </MsgContext.Provider> 
+    </RunLuaContextt.Provider>
   );
 };
 

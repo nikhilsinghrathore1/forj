@@ -15,6 +15,7 @@ export default function Home() {
     setMessage([{ msg: prompt, role: "user" }]);
     redirect("/newGenerating");
   };
+  
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     console.log("first entered");
     if (event.key === "Enter" && !event.shiftKey && prompt.length > 1) {

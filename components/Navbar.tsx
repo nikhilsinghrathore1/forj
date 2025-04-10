@@ -4,8 +4,8 @@ import Image from 'next/image'
 import React from 'react'
 import { FiExternalLink, FiMoon, FiSearch,  } from 'react-icons/fi'
 
-const Navbar = () => {
 
+const Navbar = () => {
 
   return (
        <div className="w-full items-center fixed bg-white z-[100]  justify-between top-0 py-3 flex px-6 ">

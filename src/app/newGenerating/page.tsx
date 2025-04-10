@@ -1,7 +1,6 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MsgContext } from "../../../context/MsgContext";
-import Codeview from "../../../components/CodeView";
 import { PreviewContext } from "../../../context/PreviewContext";
 import { sanitizeAndParseJSON } from "../../../configs/AiModel";
 import Markdown from "react-markdown"
@@ -9,43 +8,44 @@ import { FiLink } from "react-icons/fi";
 import axios from "axios";
 import Prompt from "../../../data/Prompt";
 import { FaPlay } from "react-icons/fa";
-import PromptAO from "../../../data/PromptAO";
-
-
+import { Codeview } from "../../../components/CodeView";
+import { RunLuaContextt } from "../../../context/LuaContext";
 
 const page = () => {
   const lastCalledRef = useRef(0); 
   const [loading, setloading] = useState(true)
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef(null);
 
-
-  const handleMouseEnter = (index:any) => {
+  const handleMouseEnter = (index) => {
     timeoutRef.current = setTimeout(() => {
       setHoveredIndex(index);
     }, 800); // 1 second delay
   };
 
   const handleMouseLeave = () => {
-    clearTimeout(timeoutRef.current!);
+    clearTimeout(timeoutRef.current);
     setHoveredIndex(null);
   };
-
-
 
   // what all needs to be fixed first thing first i have to implement the web-container that is the first task 
   const context = useContext(MsgContext);
   if (!context) {
     throw new Error("context not present");
   }
-  const { message, setMessage } = context;
+  const LuaContext = useContext(RunLuaContextt);
+  if (!LuaContext) {
+    throw new Error("context not present");
+  }
+  const {setLuaMsg} = LuaContext
+  const { messages, setMessage } = context;
   const [isHovered, setIsHovered] = useState(false);
 
     const Previewcontext = useContext(PreviewContext);
     if (!Previewcontext) {
       throw new Error("context not defined");
     }
-    const {setPreview } = Previewcontext;
+    const { preview, setPreview } = Previewcontext;
 
   const followUpChat = () => {
     if (userInput.length > 2) {
@@ -63,52 +63,47 @@ const page = () => {
   };
 
 
-  useEffect(() => {
-    const getChat = async () => {
-      const now = Date.now();
-  
-      // Rate limiter: skip if last call was < 10s ago
-      if (now - lastCalledRef.current < 10000) {
-        console.log("Rate limiter active, skipping call.");
-        return;
-      }
-  
-      lastCalledRef.current = now;
-      console.log("Calling the get AI response here");
-  
-      try {
-        const MESSAGE = JSON.stringify(message) + Prompt.CHAT_PROMPT;
-  
-        const response = await axios.post(`https://anon-backend-1yz9.onrender.com/chat/getChat`, {
-          prompt: MESSAGE,
-        });
-  
-        const result = sanitizeAndParseJSON(response.data.res);
-  
-        setMessage((prev) => [
-          ...(Array.isArray(prev) ? prev : []),
-          {
-            role: "ai",
-            msg: result.response?.description ?? result.response,
-          },
-        ]);
-  
-        console.log(result);
-      } catch (err) {
-        console.log(err);
-        throw err;
-      } finally {
-        setloading(false);
-      }
-    };
-  
-    if (message.length > 0 && message[message.length - 1].role === "user") {
-      // Only trigger when user adds a new message
-      console.log("request sent to get chat");
-      getChat();
+useEffect(()=>{
+  const getChat = async()=>{
+    const now = Date.now();
+    if (now - lastCalledRef.current < 10000) {
+      console.log("Rate limiter active, skipping call.");
+      return; 
     }
-  }, [message]);
-  
+    lastCalledRef.current = now; 
+    console.log("Calling the get AI response here");
+    try{
+
+      const MESSAGE = JSON.stringify(messages) + Prompt.CHAT_PROMPT
+      const response = await axios.post(`https://anon-backend-1yz9.onrender.com/chat/getChat` , {
+        prompt: MESSAGE
+      })
+      const result = sanitizeAndParseJSON(response.data.res)
+      setMessage((prev) => [
+        ...(Array.isArray(prev) ? prev : []),
+        {
+          role: "ai",
+          msg: result.response?.description ?? result.response
+
+        },
+      ]);
+
+      console.log(result)
+    }catch(err){
+      console.log(err)
+      throw err; 
+    }
+    finally{
+
+      setloading(false)
+    }
+
+  }
+  console.log("request send to get chat")
+   getChat()
+
+},[messages])
+
 
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -250,7 +245,7 @@ const page = () => {
     
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(null)}
+        onMouseEnter={() => setHoveredIndex(0)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -280,7 +275,7 @@ const page = () => {
 
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(null)}
+        onMouseEnter={() => setHoveredIndex(1)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -312,7 +307,7 @@ const page = () => {
 
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(null)}
+        onMouseEnter={() => setHoveredIndex(2)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -339,7 +334,7 @@ const page = () => {
 
       <div
         className='relative inline-block'
-        onMouseEnter={() => setHoveredIndex(null)}
+        onMouseEnter={() => setHoveredIndex(3)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <svg
@@ -372,7 +367,7 @@ const page = () => {
            
       <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(null)}
+        onMouseEnter={() => handleMouseEnter(4)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
        
@@ -414,7 +409,7 @@ const page = () => {
 
             <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(null)}
+        onMouseEnter={() => handleMouseEnter(5)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
        
@@ -466,7 +461,7 @@ const page = () => {
 
             <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(null)}
+        onMouseEnter={() => handleMouseEnter(6)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
        
@@ -522,7 +517,7 @@ const page = () => {
         <div className="w-full text-white  h-[6.4%] border-b-[0.5px] flex items-center justify-between px-5 border-[#37454E] ">
           {/* first part */}
           <div className="flex items-center gap-[6px]">
-            <h1 className="text-sm f7 tracking-tighter">BetaVersion</h1>
+            <h1 className="text-sm f7 tracking-tighter">NikoTuner</h1>
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -597,10 +592,10 @@ const page = () => {
 
             <div
         className='relative  inline-block'
-        onMouseEnter={() => handleMouseEnter(null)}
+        onMouseEnter={() => handleMouseEnter(7)}
         onMouseLeave={() => handleMouseLeave()}
       >
-       <FaPlay className="opacity-90"/>
+       <FaPlay onClick={setLuaMsg} className="opacity-90"/>
         {hoveredIndex === 7 && (
           <div className='absolute -bottom-[200%] z-[100] -right-[50%] text-white px-3 py-2 bg-black rounded-md text-xs whitespace-nowrap shadow-lg border border-gray-700'>
             Run lua 
@@ -610,7 +605,7 @@ const page = () => {
 
             <div
         className='relative inline-block'
-        onMouseEnter={() => handleMouseEnter(null)}
+        onMouseEnter={() => handleMouseEnter(8)}
         onMouseLeave={() => handleMouseLeave()}
       >
       <FiLink className="opacity-80"/>
@@ -674,7 +669,7 @@ const page = () => {
     <div className="w-full h-[77%] text-[#FFFFFF] gap-5 border-b border-[#37454E] justify-end px-4 flex flex-col">
       {/* Chat Section */}
       <div className="flex flex-col overflow-y-auto py-5 gap-5 justify-end items-end">
-        {message.map((msg, index) => (
+        {messages.map((msg, index) => (
           <div key={index} className="w-full flex flex-col gap-3 justify-end items-end">
             {msg.role === "user" && (
               <div className="min-w-[70%] max-w-[80%] py-2 px-2 text-sm rounded-lg bg-[#313D45]">

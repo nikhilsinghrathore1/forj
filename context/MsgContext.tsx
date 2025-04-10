@@ -6,11 +6,11 @@ interface Message {
 }
 
 interface MsgContextType {
-  message: Message[];
+  messages: Message[];
   setMessage: Dispatch<SetStateAction<Message[]>>;
 }
 
 export const MsgContext = createContext<MsgContextType>({
-  message: [],
+  messages: [],
   setMessage: () => {},
 });

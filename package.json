@@ -13,6 +13,7 @@
     "@codesandbox/sandpack-themes": "^2.0.21",
     "@google/generative-ai": "^0.22.0",
     "@gsap/react": "^2.1.2",
+    "@permaweb/aoconnect": "^0.0.78",
     "@webcontainer/api": "^1.5.1-internal.9",
     "axios": "^1.8.1",
     "dedent": "^1.5.3",
