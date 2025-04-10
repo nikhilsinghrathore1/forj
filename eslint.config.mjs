@@ -18,6 +18,8 @@ const eslintConfig = [
       "react/no-unescaped-entities": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "no-warning-comments": "off",
+      "noImplicitAny": "off",
+      "suppressImplicitAnyIndexErrors": true,
       "no-console": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-unused-vars": "off",

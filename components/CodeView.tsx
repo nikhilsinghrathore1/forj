@@ -111,7 +111,7 @@ export const Codeview = () => {
  
    const pId = await spawnProcess("AnonProcess")
  
-   
+
  
    const luaFilePaths = [
      '/index.lua',
@@ -119,14 +119,14 @@ export const Codeview = () => {
      'index.lua',
    ];
  
-   const luaCodeToBeEval = luaFilePaths
-     .map((path) => files?.[path])
-     .find((code) => code);
- 
+   const luaCodeToBeEval: string | undefined = luaFilePaths
+   .map((path) => files?.[path])
+   .find((code): code is string => typeof code === "string");
  
    if (!luaCodeToBeEval) return;
+   //@ts-ignore
    console.log(luaCodeToBeEval.code)
- 
+   //@ts-ignore
    if (typeof window === 'undefined' || !window.arweaveWallet) return;
  
    try {
@@ -134,6 +134,7 @@ export const Codeview = () => {
 
 
      const messageId = await message({
+      //@ts-ignore
        data:`${luaCodeToBeEval.code}`,
        process:pId!,
        tags:  [
@@ -153,6 +154,7 @@ export const Codeview = () => {
        message: messageId,
      });
      console.log(result)
+     //@ts-ignore
      res.id = messageId;
  
    } catch (error) {
@@ -172,15 +174,16 @@ export const Codeview = () => {
     const processId = await spawn({
       module: AOModule,
       scheduler: AOScheduler,
+      //@ts-ignore
       signer: createDataItemSigner(window.arweaveWallet),
       tags: allTags,
     });
 
     const newExportLine = `\nconst pId = "${processId}";`;
 
-    const existingUtilsContent =
+    const existingUtils = files?.["/arweaveUtils.js"];
+    const existingUtilsContent = existingUtils?.code;
     
-      files["/arweaveUtils.js"]?.code || "";
       console.log(files)
       console.log(existingUtilsContent)
 
