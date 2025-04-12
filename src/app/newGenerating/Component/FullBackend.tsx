@@ -119,7 +119,7 @@ useEffect(()=>{
   const [activeTab, setActiveTab] = useState("Chat");
 
   return (
-    <div className="w-full h-screen overflow-hidden bg-[#20282D] flex ">
+    <div className="w-full h-screen overflow-hidden bg-[#20282D]  flex ">
       {/* this is the left most  nav bar  */}
       <div className="w-[3.1%] py-4 border-r-[0.5px] border-[#37454E]/20 bg-[#293138] ">
         <div className="w-full flex flex-col h-full items-center justify-between border-r-[0.5px] border-[#37454E] bg-[#293138] ">
