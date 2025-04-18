@@ -6,7 +6,7 @@ import { RunLuaContextt } from '../../context/LuaContext';
 
 const Provider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessage] = useState<{ msg: string; role: string; }[]>([]); // Ensuring it's an array of objects
-  const [preview, setPreview] = useState<string>("code");
+  const [preview, setPreview] = useState<boolean>(true);
   const [LuaMsg, setLuaMsg] = useState<string>("");
 
   return (

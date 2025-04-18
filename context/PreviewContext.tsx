@@ -1,12 +1,11 @@
-import { setPriority } from "os";
-import { createContext , Dispatch, SetStateAction } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
+
 interface PreviewContextInterface {
-  preview: string;
-  setPreview: Dispatch<SetStateAction<string>>;
+  preview: boolean;
+  setPreview: Dispatch<SetStateAction<boolean>>;
 }
 
-
 export const PreviewContext = createContext<PreviewContextInterface>({
-               preview:"code",
-               setPreview:()=>{}
- })
+  preview: false,
+  setPreview: () => {},
+});

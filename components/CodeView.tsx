@@ -67,8 +67,8 @@ export const Codeview = () => {
   useEffect(() => {
     setPreviewStyle((prev) => ({
       ...prev,
-      transform: preview === "preview" ? "translateX(0)" : "translateX(100vw)",
-      opacity: preview === "preview" ? 1 : 0,
+      transform: preview === false ? "translateX(0)" : "translateX(100vw)",
+      opacity: preview === false ? 1 : 0,
       transition: "transform 0.5s ease-in-out, opacity 0.5s ease-in-out",
     }));
   }, [preview]);
@@ -234,7 +234,7 @@ export const Codeview = () => {
         <div className="w-full h-screen flex flex-col items-center justify-center bg-black  text-white">
           <div className="flex items-center gap-4 animate-pulse ">
             <p className="text-lg animate-pulse mb-6">
-              Your files are loading... {progress}%
+              Your files are loading...
             </p>
             <div
               style={{
@@ -259,7 +259,6 @@ export const Codeview = () => {
             externalResources: ["https://cdn.tailwindcss.com"],
           }}
           template="react"
-          theme={atomDark}
         >
           <SandpackLayout>
             <SandpackFileExplorer style={{ height: "93vh" }} />
@@ -284,5 +283,4 @@ export const Codeview = () => {
     </div>
   );
 };
-
 
