@@ -334,30 +334,33 @@ const FullBackend = () => {
              </div>
            </div>            ) : (
               msg.role === "ai" && (
-                <div className="w-full gap-2 flex items-start">
-                <div className="w-[12%] flex justify-center h-full">
-                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                    <svg
-                      className="w-[20px] text-gray-600"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 25 25"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12.5192 1.91235L17.0537 4.53232L18.1874 5.18731M21.5883 7.15228V12.2914V13.5762M21.5883 17.4306L17.0537 20.0506L15.9201 20.7056M12.5192 22.6705L7.98463 20.0506L6.85099 19.3956M3.45007 17.4306V12.2914V11.0067M3.45007 7.15228L7.98463 4.53232L9.11826 3.87733"
-                        stroke="#4B5563"
-                        strokeWidth="1.25"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div className="w-[85%] text-sm text-gray-800">
-                  <Markdown>{msg.msg}</Markdown>
-                </div>
-              </div>              
+<div className="w-full gap-2 flex items-start">
+  <div className="w-[12%] flex justify-center h-full">
+    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shadow-sm">
+      <svg
+        className="w-[20px] text-gray-600"
+        width="20"
+        height="20"
+        viewBox="0 0 25 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12.5192 1.91235L17.0537 4.53232L18.1874 5.18731M21.5883 7.15228V12.2914V13.5762M21.5883 17.4306L17.0537 20.0506L15.9201 20.7056M12.5192 22.6705L7.98463 20.0506L6.85099 19.3956M3.45007 17.4306V12.2914V11.0067M3.45007 7.15228L7.98463 4.53232L9.11826 3.87733"
+          stroke="#4B5563"
+          strokeWidth="1.25"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div className="w-[85%] bg-[#e8eff7] text-gray-900 text-sm rounded-md px-4 py-2 shadow-sm">
+    <Markdown>{msg.msg}</Markdown>
+  </div>
+</div>
+
+         
               )
             )}
           </div>
