@@ -138,7 +138,7 @@ const FullBackend = () => {
       try {
         const MESSAGE = JSON.stringify(messages) + Prompt.CHAT_PROMPT;
   
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/genChat`, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/getChat`, {
           prompt: MESSAGE,
         });
   
