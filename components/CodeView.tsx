@@ -12,7 +12,6 @@ import {
   spawn,
   message,
   createDataItemSigner,
-  createSigner,
   result
 } from "@permaweb/aoconnect"
 
@@ -32,7 +31,96 @@ import Extras from "../data/Extras";
 import { RunLuaContextt } from "../context/LuaContext";
 import { json } from "stream/consumers";
 
+// Professional Loading Component
+const ProfessionalLoader = () => {
+  const [progress, setProgress] = useState(0);
 
+  const scrollingMessages = [
+    "Initializing workspace environment...",
+    "Installing required dependencies...",
+    "Configuring build tools...",
+    "Setting up development server...",
+    "Generating project structure...",
+    "Applying styling frameworks...",
+    "Analyzing code patterns...",
+    "Optimizing performance...",
+    "Compiling source files...",
+    "Finalizing setup...",
+    "Almost ready to code...",
+    "Preparing your workspace...",
+    "Loading project templates...",
+    "Securing connections...",
+    "Launching development environment..."
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress(prev => Math.min(prev + Math.random() * 8, 95));
+    }, 400);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-800 text-white relative overflow-hidden">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="w-full h-full" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px'
+        }}></div>
+      </div>
+
+      <div
+  style={{ backgroundColor: "#1a1a1a" }}
+  className="relative z-10 flex h-full w-full justify-center gap-3 flex-col items-center space-y-8"
+>
+  {/* Loading Text */}
+  <h2 className="text-3xl font-semibold text-white">
+    Loading
+  </h2>
+
+  {/* Vertical Scrolling Carousel - 30% height */}
+  <div className="relative w-96 overflow-hidden" style={{ height: '30vh' }}>
+    {/* Fade gradient at top */}
+    <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-gray-800 to-transparent z-10"></div>
+    
+    {/* Fade gradient at bottom */}
+    <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-800 to-transparent z-10"></div>
+    
+    {/* Scrolling content */}
+    <div className="animate-scroll-up flex flex-col space-y-4 py-16">
+      {[...Array(3)].map((_, setIndex) => (
+        <div key={setIndex}>
+          {scrollingMessages.map((message, index) => (
+            <div key={`${setIndex}-${index}`} className="text-center py-3 text-base text-gray-300 font-medium">
+              {message}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+
+      {/* Custom CSS for animations */}
+      <style jsx>{`
+        @keyframes scroll-up {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        
+        .animate-scroll-up {
+          animation: scroll-up 20s linear infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export const Codeview = () => {
   // loading logic
@@ -74,12 +162,13 @@ export const Codeview = () => {
   }, [preview]);
       
   const GetCode = async () => {
+    console.log("runnign the gencode function")
     setLoading(true);
     const PROMPT = messages[messages.length - 1].msg;
     console.log(PROMPT);
     
     try {
-      const result = await axios.post(`https://anon-backend-1yz9.onrender.com/code/genCode`, {
+      const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/code/genCode`, {
         role: "user",
         prompt: PROMPT,
       });
@@ -231,21 +320,7 @@ export const Codeview = () => {
     <div className="relative w-full h-full">
    
       {Loading ? (
-        <div className="w-full h-screen flex flex-col items-center justify-center bg-black  text-white">
-          <div className="flex items-center gap-4 animate-pulse ">
-            <p className="text-lg animate-pulse mb-6">
-              Your files are loading...
-            </p>
-            <div
-              style={{
-                width: "20px",
-                height: "20px",
-                border: "4px solid white",
-                animation: "spin 3s linear infinite",
-              }}
-            ></div>
-          </div>
-        </div>
+        <ProfessionalLoader />
       ) : (
         <SandpackProvider
           className="relative w-full h-full "
@@ -283,4 +358,3 @@ export const Codeview = () => {
     </div>
   );
 };
-

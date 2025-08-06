@@ -1,5 +1,3 @@
-
-
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MsgContext } from "../../../../context/MsgContext";
@@ -14,14 +12,28 @@ import { FaPlay } from "react-icons/fa";
 import { RunLuaContextt } from "../../../../context/LuaContext";
 import logo from "../../../../public/bgRemoveLogoAnon.png"
 import Image from "next/image";
+import useSpeechToText from 'react-hook-speech-to-text';
 
 
 const FullBackend = () => {
   const lastCalledRef = useRef(0); 
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // Voice recognition setup
+  const {
+    error,
+    interimResult,
+    isRecording,
+    results,
+    startSpeechToText,
+    stopSpeechToText,
+  } = useSpeechToText({
+    continuous: true,
+    useLegacyResults: false
+  });
 
   const handleMouseEnter = (index:any) => {
     timeoutRef.current = setTimeout(() => {
@@ -34,7 +46,10 @@ const FullBackend = () => {
     setHoveredIndex(null);
   };
 
-
+  // State declarations - moved up to avoid reference errors
+  const [userInput, setuserInput] = useState("");
+  const [isToggled, setIsToggled] = useState(false);
+  const [activeTab, setActiveTab] = useState("Chat");
 
   // what all needs to be fixed first thing first i have to implement the web-container that is the first task 
   const context = useContext(MsgContext);
@@ -72,6 +87,31 @@ const FullBackend = () => {
     }
   };
 
+  // Handle voice input
+  const handleVoiceInput = () => {
+    if (isRecording) {
+      stopSpeechToText();
+    } else {
+      startSpeechToText();
+    }
+  };
+
+  // Update user input when voice recognition results change
+  useEffect(() => {
+    if (results.length > 0) {
+      // @ts-ignore
+      const transcript = results[results.length - 1]?.transcript || '';
+      setuserInput(transcript);
+    }
+  }, [results]);
+
+  // Send voice message when recording stops and there's content
+  useEffect(() => {
+    if (!isRecording && results.length > 0 && userInput.length > 2) {
+      followUpChat();
+    }
+  }, [isRecording, results, userInput]);
+
   const RunLuaContetxt = () => {
     if(LuaMsg =='run'){
       setLuaMsg('stop');
@@ -98,7 +138,7 @@ const FullBackend = () => {
       try {
         const MESSAGE = JSON.stringify(messages) + Prompt.CHAT_PROMPT;
   
-        const response = await axios.post(`https://anon-backend-1yz9.onrender.com/chat/getChat`, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/genChat`, {
           prompt: MESSAGE,
         });
   
@@ -108,7 +148,7 @@ const FullBackend = () => {
           ...(Array.isArray(prev) ? prev : []),
           {
             role: "ai",
-            msg: result.response?.description ?? result.response,
+            msg: result.response?.description ?? result.response
           },
         ]);
   
@@ -136,9 +176,6 @@ const FullBackend = () => {
       followUpChat();
     }
   };
-  const [userInput, setuserInput] = useState("");
-  const [isToggled, setIsToggled] = useState(false);
-  const [activeTab, setActiveTab] = useState("Chat");
 
   return (
     <div className="w-full h-screen overflow-hidden bg-[#fff]  flex ">
@@ -165,7 +202,7 @@ const FullBackend = () => {
             <Image className="w-full h-full object-cover" src={logo} alt="not showing" />
           </div>  
 
-          <div className="relative inline-block text-left">
+          <div className="relative inline-block text-left group">
       <div
         className="w-9 mr-3 -ml-1 bg-transparent flex items-center justify-center transition-all duration-150 h-9 rounded-full hover:bg-[#F2F2F2] cursor-pointer"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -184,6 +221,14 @@ const FullBackend = () => {
         >
           <path d="m6 9 6 6 6-6"></path>
         </svg>
+      </div>
+      
+      {/* Tooltip */}
+      <div className="absolute z-[100] bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+        <div className="bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+          Preview
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-800"></div>
+        </div>
       </div>
 
       {isOpen && (
@@ -306,7 +351,7 @@ const FullBackend = () => {
             )}
 
             {loading ? (
-             <div className="w-full flex items-start gap-2">
+             <div className="w-full flex   items-start gap-2">
              <div className="w-[12%] flex justify-center h-full">
                <div className="w-8 h-8 rounded-full bg-[#E0E0E0] flex items-center justify-center">
                  <svg
@@ -388,10 +433,51 @@ const FullBackend = () => {
           onKeyDown={handleKeyDown}
           className="w-full text-black outline-none f4 bg-transparent placeholder:text-[#45544D] text-sm px-3"
           type="text"
-          placeholder="What do you want to change..."
+          placeholder={isRecording ? "Listening..." : "What do you want to change..."}
         />
       </div>
-      <div className="w-full flex justify-end items-center px-4">
+      <div className="w-full flex justify-between items-center px-4">
+        {/* Voice Input Button */}
+        <button
+          onClick={handleVoiceInput}
+          className={`p-2 text-sm rounded-full mb-2 flex items-center justify-center transition-all duration-200 ${
+            isRecording 
+              ? 'bg-red-500 text-white animate-pulse' 
+              : 'bg-gray-300 text-gray-600 hover:bg-gray-400'
+          }`}
+        >
+          {isRecording ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <rect x="6" y="4" width="4" height="16" rx="2" />
+              <rect x="14" y="4" width="4" height="16" rx="2" />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" x2="12" y1="19" y2="22"></line>
+              <line x1="8" x2="16" y1="22" y2="22"></line>
+            </svg>
+          )}
+        </button>
+
+        {/* Send Button */}
         <div className="p-2 text-sm rounded-full mb-2 flex items-center justify-center text-white bg-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -412,9 +498,7 @@ const FullBackend = () => {
     </div>
   </div>
 </div>
-
-
-    </div>
+</div>
   );
 };
 export default FullBackend;

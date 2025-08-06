@@ -24,30 +24,79 @@
 // };
 const sanitizeAndParseJSON = (text: string) => {
   try {
-    // Extract JSON content between triple backticks (```json ... ```) or within curly braces `{...}`
-    const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/({[\s\S]*})/);
+    // First check for JSON in code blocks
+    const codeBlockMatch = text.match(/```json\s*([\s\S]*?)\s*```/);
     
-    if (!jsonMatch) {
-      throw new Error("No valid JSON structure found in text.");
+    if (codeBlockMatch) {
+      let cleanText = codeBlockMatch[1].trim();
+      
+      // Remove extra whitespace, newlines, and ensure valid JSON structure
+      cleanText = cleanText
+        .replace(/\r\n/g, "\n") // Normalize newlines
+        .replace(/\n\s+/g, "\n") // Trim unnecessary leading spaces on new lines
+        .replace(/,(\s*[}\]])/g, "$1") // Remove trailing commas before closing braces/brackets
+        .trim();
+
+      return JSON.parse(cleanText);
     }
 
-    let cleanText = jsonMatch[1].trim(); // Extract JSON content
+    // Check if the entire text (trimmed) is a JSON object or array
+    const trimmedText = text.trim();
+    
+    // Only try to parse as JSON if it starts with { or [ and ends with } or ]
+    if ((trimmedText.startsWith('{') && trimmedText.endsWith('}')) || 
+        (trimmedText.startsWith('[') && trimmedText.endsWith(']'))) {
+      
+      let cleanText = trimmedText
+        .replace(/\r\n/g, "\n") // Normalize newlines
+        .replace(/\n\s+/g, "\n") // Trim unnecessary leading spaces on new lines
+        .replace(/,(\s*[}\]])/g, "$1") // Remove trailing commas before closing braces/brackets
+        .trim();
 
-    // Remove extra whitespace, newlines, and ensure valid JSON structure
-    cleanText = cleanText
-      .replace(/\r\n/g, "\n") // Normalize newlines
-      .replace(/\n\s+/g, "\n") // Trim unnecessary leading spaces on new lines
-      .replace(/,(\s*[}\]])/g, "$1") // Remove trailing commas before closing braces/brackets
-      .trim();
+      // Try to parse as JSON
+      try {
+        return JSON.parse(cleanText);
+      } catch (jsonError) {
+        // If JSON parsing fails, fall through to string handling
+      }
+    }
 
-    return JSON.parse(cleanText);
+    // Handle as plain string
+    // Remove leading and trailing quotes, handling unbalanced quotes
+    let result = trimmedText;
+    
+    // Remove leading quotes (handle multiple quotes)
+    while (result.startsWith('"')) {
+      result = result.slice(1);
+    }
+    
+    // Remove trailing quotes (handle multiple quotes)  
+    while (result.endsWith('"')) {
+      result = result.slice(0, -1);
+    }
+    
+    return result;
+
   } catch (error) {
-    console.error("JSON parsing error:", error);
-    console.error("Original text:", text);
-    throw new Error(`Invalid JSON response: `);
+    // If anything fails, try to return the original text as a fallback
+    const trimmedText = text.trim();
+    
+    // Remove leading and trailing quotes, handling unbalanced quotes
+    let result = trimmedText;
+    
+    // Remove leading quotes (handle multiple quotes)
+    while (result.startsWith('"')) {
+      result = result.slice(1);
+    }
+    
+    // Remove trailing quotes (handle multiple quotes)  
+    while (result.endsWith('"')) {
+      result = result.slice(0, -1);
+    }
+    
+    return result;
   }
 };
-
 // export const chatSession = model.startChat({
 //   generationConfig,
 //   history: [
